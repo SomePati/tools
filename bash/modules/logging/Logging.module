@@ -25,7 +25,6 @@ function WriteH () {
 
 function WriteC () {
 	TimeStamp=$(date +%H:%M:%S) 
-
 	printf "\n$TimeStamp - C - $@"
 }
 
@@ -47,8 +46,8 @@ function WriteO () {
 function WriteV () {
 	if [ "$VERBOSE" == 0 ] 
 	then
-	TimeStamp=$(date +%H:%M:%S)
-	printf "\n$TimeStamp ${cyan}- V - $@${reset}"
+		TimeStamp=$(date +%H:%M:%S)
+		printf "\n$TimeStamp ${cyan}- V - $@${reset}"
 	fi
 }
 
@@ -60,7 +59,7 @@ function WriteF () {
 }
 
 #functions Log
-function ageFiles(){    
+function ageFiles(){ # this function is not usable    
 	FULLLOGPATHREGEX="$SCRIPTNAME""_[[:digit:]]{8}_[[:digit:]]{6}.log"
 	LogV "File/s to age: $FULLLOGPATHREGEX"
 	LogV "Number of files: $AGING"
@@ -77,7 +76,7 @@ function ageFiles(){
     
     Length=${#LogFilesInFolder[@]}
     LogV "Length: $Length"
-
+	
 }
 
 function LogH() {
