@@ -1,0 +1,160 @@
+#! /bin/bash
+#TODO 
+#1. adjustments for ConsoleLength=$(tput cols) 
+test
+#printf in color
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+orange=$(tput setaf 3)
+cyan=$(tput setaf 6)
+yellow=$(tput setaf 11)
+reset=$(tput sgr0)
+
+
+#functions Write
+function WriteH () {
+
+	TimeStamp=$(date +%H:%M:%S)
+    printf "$TimeStamp ${orange}- ############################################################${reset}"
+    printf "\n$TimeStamp ${orange}- #     Starting $SCRIPTNAME ${reset}"
+    printf "\n$TimeStamp ${orange}- ############################################################${reset}"
+}
+
+function WriteC () {
+	TimeStamp=$(date +%H:%M:%S) 
+
+	printf "\n$TimeStamp - C - $@"
+}
+
+function WriteE () {
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp ${red}- E - $@${reset}"
+}
+
+function WriteW () {
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp ${yellow}- W - $@${reset}"
+}
+
+function WriteO () {
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp ${green}- O - $@${reset}"
+}
+
+function WriteV () {
+	if [ "$VERBOSE" == 0 ] 
+	then
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp ${cyan}- V - $@${reset}"
+	fi
+}
+
+function WriteF () {
+	TimeStamp=$(date +%H:%M:%S)
+    printf "\n$TimeStamp ${orange}- ############################################################${reset}"
+    printf "\n$TimeStamp ${orange}- #     Finished $SCRIPTNAME ${reset}"
+    printf "\n$TimeStamp ${orange}- ############################################################${reset}\n"
+}
+
+#functions Log
+function LogH() {
+    #LogH 
+    #Mandatory variables in parentscript
+    #FULLLOGPATH & SCRIPTNAME As String
+    #optional 
+    #AGING as Integer
+
+    Date=$(date +%Y%m%d)
+    TimeStamp=$(date +%H%M%S)
+	LogTimeStamp=$(date +%H:%M:%S)
+	SCRIPTNAME=$(basename $FULLSCRIPTNAME)
+
+    #create file with header
+    if [ -z $AGING ] 
+    then
+        AGING=0
+	    FULLLOGPATHNAME="$FULLLOGPATH""$SCRIPTNAME""_""$Date""_""$TimeStamp"".log"
+    else 
+    F	ULLLOGPATHNAME="$FULLLOGPATH""$SCRIPTNAME""_""$Date""_""$TimeStamp"".log""$AGING"
+    fi
+
+    touch $FULLLOGPATHNAME    
+
+    printf "$LogTimeStamp - ############################################################"  >> $FULLLOGPATHNAME
+    printf "\n$LogTimeStamp - #     Starting $SCRIPTNAME "  >> $FULLLOGPATHNAME
+    printf "\n$LogTimeStamp - ############################################################" >> $FULLLOGPATHNAME
+    printf "\n$LogTimeStamp - # FullScriptName   :    $FULLSCRIPTNAME" >> $FULLLOGPATHNAME
+    printf "\n$LogTimeStamp - # Arguments        :    $ARGUMENTS" >> $FULLLOGPATHNAME
+ 	printf "\n$LogTimeStamp - # PID              :    $$" >> $FULLLOGPATHNAME
+    printf "\n$LogTimeStamp - # LogPath          :    $LOGPATH" >> $FULLLOGPATHNAME   
+    printf "\n$LogTimeStamp - # User             :    $USER" >> $FULLLOGPATHNAME
+	printf "\n$LogTimeStamp - # Hostname         :    $HOSTNAME" >> $FULLLOGPATHNAME
+	printf "\n$LogTimeStamp - # Date             :    $Date" >> $FULLLOGPATHNAME
+	printf "\n$LogTimeStamp - #############################################################" >> $FULLLOGPATHNAME
+	WriteH
+} 
+
+function LogC () {
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp - C - $@" >> $FULLLOGPATHNAME  
+	WriteC "$@"
+}
+
+function LogI () {
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp - I - $@" >> $FULLLOGPATHNAME  
+}
+
+function LogE () {
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp - E - $@" >> $FULLLOGPATHNAME  
+	WriteE "$@"
+}
+
+function LogW () {
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp - W - $@" >> $FULLLOGPATHNAME  
+	WriteW "$@"
+}
+
+function LogO () {
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp - O - $@" >> $FULLLOGPATHNAME  
+	WriteO "$@"
+}
+
+function LogV () {
+	if [ "$VERBOSE" == 0 ] 
+	then
+	TimeStamp=$(date +%H:%M:%S)
+	printf "\n$TimeStamp - V - $@" >> $FULLLOGPATHNAME  
+	WriteV "$@"
+	#
+	#else 	
+	#	printf 'NONVERBOSE'
+	fi
+}
+
+function LogF(){
+	TimeStamp=$(date +%H:%M:%S)
+
+    printf "\n$TimeStamp - ############################################################" >> $FULLLOGPATHNAME
+    printf "\n$TimeStamp - #     $SCRIPTNAME FINISHED ! " >> $FULLLOGPATHNAME
+    printf "\n$TimeStamp - ############################################################" >> $FULLLOGPATHNAME
+    WriteF
+}
+#test functions
+function writeTest () {
+WriteW Warning
+WriteO OK
+WriteE Error
+WriteV Verbose
+}
+
+function logTest() {
+LogI Info
+LogW Warning
+LogO OK
+LogE Error
+LogV Verbose
+}
