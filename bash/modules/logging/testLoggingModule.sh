@@ -26,32 +26,4 @@ VERSIONSTRING="$SCRIPTNAME - ${orange}Version $VERSION - $LASTCHANGED${reset} - 
 LogH $LOGPATH $FULLSCRIPTNAME $@
 logTest
 writeTest
-
-while getopts ":hV" opt; do
-	case  $opt in
-	h)
-		WriteC "Usage:"
-		WriteC " -v ... Verbose output, needs to be first option -v.."
-		WriteC " -V ... Version"
-		WriteC " -h ... this help msg"
-		WriteC " -s ... sourcepath"
-		WriteC " -d ... destinationpath"
-		WriteC " -r ... recursive copy process"
-		
-		WriteC "$VERSIONSTRING"
-		LogF
-		exit 0
-	;;	
-	V)
-		WriteC "$VERSIONSTRING"
-		LogF
-		exit 0
-	;;
-	:)
-		WriteC "Option -$OPTARG requires an argument\n" >&2
-		LogF
-		exit 1
-	;;	esac
-done
-
 LogF
